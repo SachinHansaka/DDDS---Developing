@@ -15,4 +15,10 @@ if __name__ == '__main__':
 
     print_hi("hello")
 
+
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+def my_age(age):
+    print("Your age is " + age)
+
+my_age("12")
