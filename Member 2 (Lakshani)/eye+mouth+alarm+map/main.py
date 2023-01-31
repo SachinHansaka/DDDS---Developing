@@ -3,7 +3,8 @@ import webbrowser
 import cv2
 import dlib
 import numpy as np
-import pyglet
+#import pyglet
+import pygame
 from imutils import face_utils
 
 
@@ -72,9 +73,11 @@ def writeEyes(a, b, img):
 
 # open_avg = train.getAvg()
 # close_avg = train.getAvg()
-player = pyglet.media.Player()
-alert = pyglet.resource.media('focus.mp3')
-player.queue(alert)
+#alert = pyglet.resource.media('focus.mp3')
+#player.queue(alert)
+
+pygame.mixer.init()
+pygame.mixer.music.load('alert.wav')
 
 frame_thresh_1 = 15
 frame_thresh_2 = 10
@@ -127,7 +130,8 @@ while True:
             if yawn_countdown and flag >= frame_thresh_3:
                 eyeContourColor = (147, 20, 255)
                 cv2.putText(gray, "Drowsy after yawn", (50, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 127), 2)
-                player.play()
+                #player.play()
+                pygame.mixer.music.play(-1)
 
                 if map_flag:
                     map_flag = 0
@@ -136,7 +140,8 @@ while True:
             elif flag >= frame_thresh_2 and getFaceDirection(shape, size) < 0:
                 eyeContourColor = (255, 0, 0)
                 cv2.putText(gray, "Drowsy (Body Posture)", (50, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 127), 2)
-                player.play()
+                #player.play()
+                pygame.mixer.music.stop()
 
                 if map_flag:
                     map_flag = 0
@@ -145,7 +150,8 @@ while True:
             elif flag >= frame_thresh_1:
                 eyeContourColor = (0, 0, 255)
                 cv2.putText(gray, "Drowsy (Normal)", (50, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 127), 2)
-                player.play()
+                #player.play()
+                pygame.mixer.music.play(-1)
 
                 if map_flag:
                     map_flag = 0
@@ -153,7 +159,8 @@ while True:
 
         elif avgEAR > close_thresh and flag:
             print("Flag reseted to 0")
-            player.pause()
+            #player.pause()
+            pygame.mixer.music.stop()
             yawn_countdown = 0
             map_flag = 1
             flag = 0
@@ -161,7 +168,7 @@ while True:
         if map_counter >= 3:
             map_flag = 1
             map_counter = 0
-            pyglet.resource.media('take_a_break.mp3').play()
+            #pyglet.resource.media('take_a_break.mp3').play()
             webbrowser.open("https://www.google.com/maps/search/hotels+near+me")
 
         cv2.drawContours(gray, [leftEyeHull], -1, eyeContourColor, 2)
@@ -169,7 +176,8 @@ while True:
         writeEyes(leftEye, rightEye, frame)
 
     if avgEAR > close_thresh:
-        player.pause()
+        #player.pause()
+        pygame.mixer.music.stop()
     cv2.imshow('Driver', gray)
     if cv2.waitKey(1) == 27:
         break
