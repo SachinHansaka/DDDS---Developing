@@ -57,7 +57,7 @@ yawn_thresh = 35
 ptime = 0
 
 #--------Start webcam video capture---------
-video_capture = cv2.VideoCapture("/Users/chalana/Testing_Dataset/037_noglasses_mix.mp4")
+video_capture = cv2.VideoCapture(0)
 
 #---------Give some time for camera to initialize(not required)-----------
 time.sleep(2)
