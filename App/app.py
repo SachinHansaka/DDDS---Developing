@@ -3,6 +3,7 @@ import subprocess
 
 app = Flask(__name__)
 
+
 @app.route('/')
 #@app.route('/home')
 def home():  # put application's code here
@@ -12,10 +13,16 @@ def home():  # put application's code here
 def start_stop():
     if request.form['submit_button'] == 'Start':
         global detection_process
-        subprocess.Popen('/Users/chalana/Desktop/Driver-drowsiness-detection-system-alert-app/Drowsiness detection with GUI/Combined_Detection.py')
-        #return redirect("new2.html")
+        detection_process = subprocess.Popen('/Users/chalana/Desktop/DDDS---Developing/App/Combined_Detection.py')
+        #return 'Detection started!'
+
+
+
     elif request.form['submit_button'] == 'Stop':
+        # Find the process ID of the running script
         detection_process.terminate()
+        #return 'Detection stopped!'
+
     return render_template('new2.html')
 
 if __name__ == '__main__':
